@@ -20,32 +20,29 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { AuthSkeleton } from "@/components/auth-skeleton";
-
-const formSchema = z.object({
-  email: z.string().email().trim().min(1, { message: "Email is required" }),
-  password: z
-    .string()
-    .min(1, { message: "Password is required" })
-    .max(256, { message: "Password must be less than 256 characters" }),
-});
+import { loginSchema } from "../schemas";
+import { useLogin } from "../api/use-login";
 
 export const SignInCard = () => {
+  const { mutate: login, isPending } = useLogin();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: z.infer<typeof loginSchema>) => {
+    login({
+      json: values,
+    });
     form.reset();
   };
 
@@ -73,6 +70,7 @@ export const SignInCard = () => {
                     <Input
                       type="email"
                       placeholder="Enter Email Address"
+                      disabled={isPending}
                       {...field}
                     />
                   </FormControl>
@@ -89,6 +87,7 @@ export const SignInCard = () => {
                     <Input
                       type="password"
                       placeholder="Enter Password"
+                      disabled={isPending}
                       {...field}
                     />
                   </FormControl>
@@ -96,7 +95,12 @@ export const SignInCard = () => {
                 </FormItem>
               )}
             />
-            <Button disabled={false} size={"lg"} className="w-full">
+            <Button
+              disabled={isPending}
+              size={"lg"}
+              className="w-full"
+              type="submit"
+            >
               Login
             </Button>
           </form>

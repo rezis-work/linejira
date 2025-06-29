@@ -4,6 +4,7 @@ import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { signUpSchema } from "../schemas";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,25 +27,18 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { AuthSkeleton } from "@/components/auth-skeleton";
-
-const formSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  email: z.string().email().trim().min(1, { message: "Email is required" }),
-  password: z
-    .string()
-    .min(8, { message: "Passwod must be at leas 8 characters" })
-    .max(256, { message: "Password must be less than 256 characters" }),
-});
+import { useRegister } from "../api/use-register";
 
 export const SignUpCard = () => {
+  const { mutate: register, isPending } = useRegister();
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -52,8 +46,10 @@ export const SignUpCard = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: z.infer<typeof signUpSchema>) => {
+    register({
+      json: values,
+    });
     form.reset();
   };
 
@@ -91,6 +87,7 @@ export const SignUpCard = () => {
                     <Input
                       type="text"
                       placeholder="Enter your name"
+                      disabled={isPending}
                       {...field}
                     />
                   </FormControl>
@@ -107,6 +104,7 @@ export const SignUpCard = () => {
                     <Input
                       type="email"
                       placeholder="Enter Email Address"
+                      disabled={isPending}
                       {...field}
                     />
                   </FormControl>
@@ -123,6 +121,7 @@ export const SignUpCard = () => {
                     <Input
                       type="password"
                       placeholder="Enter Password"
+                      disabled={isPending}
                       {...field}
                     />
                   </FormControl>
@@ -130,8 +129,13 @@ export const SignUpCard = () => {
                 </FormItem>
               )}
             />
-            <Button disabled={false} size={"lg"} className="w-full">
-              Login
+            <Button
+              type="submit"
+              disabled={isPending}
+              size={"lg"}
+              className="w-full"
+            >
+              Register
             </Button>
           </form>
         </Form>
