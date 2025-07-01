@@ -15,10 +15,9 @@ export const useLogin = () => {
     },
     onSuccess: () => {
       toast.success("Logged in successfully");
+      window.location.reload();
     },
-    onError: (error) => {
-      toast.error(error.message);
-    },
+    onError: (error) => toast.error(error.message),
   });
 
   return mutation;

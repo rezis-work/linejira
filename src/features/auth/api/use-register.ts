@@ -16,6 +16,7 @@ export const useRegister = () => {
       return await response.json();
     },
     onSuccess: () => {
+      window.location.reload();
       toast.success("Registered successfully");
     },
     onError: (error) => {
