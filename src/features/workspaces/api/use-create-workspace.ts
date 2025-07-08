@@ -3,12 +3,14 @@ import type { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type ResponseType = InferResponseType<(typeof client.api.workspaces)["$post"]>;
 type RequestType = InferRequestType<(typeof client.api.workspaces)["$post"]>;
 
 export const useCreateWorkspace = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ form }) => {
       const response = await client.api.workspaces["$post"]({ form });
@@ -17,10 +19,10 @@ export const useCreateWorkspace = () => {
       }
       return await response.json();
     },
-    onSuccess: () => {
+    onSuccess: ({ data: workspace }) => {
       toast.success("Workspace created successfully");
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-      // TODO: Redirect to the new workspace
+      router.push(`/workspaces/${workspace.$id}`);
     },
     onError: (error) => toast.error(error.message),
   });

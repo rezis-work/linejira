@@ -44,6 +44,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 
     createWorkspace({ form: finalValues });
     form.reset();
+    onCancel?.();
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
