@@ -17,7 +17,6 @@ const WorkspaceSettingsPage = async ({
   if (!user) redirect("/sign-in");
 
   const initialValues = await getWorkspace({ workspaceId });
-  if (!initialValues) redirect("/workspaces");
 
   return (
     <div className="w-full lg:max-w-xl mx-auto">
