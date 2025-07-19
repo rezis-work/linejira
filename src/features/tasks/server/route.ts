@@ -142,6 +142,10 @@ const app = new Hono()
         description = "",
       } = c.req.valid("json");
 
+      if (!workspaceId) {
+        return c.json({ error: "Workspace ID is required" }, 400);
+      }
+
       const member = await getMember({
         databases,
         workspaceId,
@@ -150,6 +154,17 @@ const app = new Hono()
 
       if (!member) {
         return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      console.log("status being queried:", status);
+      console.log("workspaceId being queried:", workspaceId);
+      console.log("projectId being queried:", projectId);
+      console.log("dueDate being queried:", dueDate);
+      console.log("assigneeId being queried:", assigneeId);
+      console.log("description being queried:", description);
+
+      if (!status) {
+        return c.json({ error: "Status is required for task creation." }, 400);
       }
 
       const highestPositionTask = await databases.listDocuments(
