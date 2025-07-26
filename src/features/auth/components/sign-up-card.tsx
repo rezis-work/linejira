@@ -28,6 +28,7 @@ import { FaGithub } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { AuthSkeleton } from "@/components/auth-skeleton";
 import { useRegister } from "../api/use-register";
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
 
 export const SignUpCard = () => {
   const { mutate: register, isPending } = useRegister();
@@ -145,6 +146,7 @@ export const SignUpCard = () => {
       </div>
       <CardContent className="p-7 flex flex-col gap-y-4">
         <Button
+          onClick={() => signUpWithGoogle()}
           variant={"secondary"}
           size={"lg"}
           className="w-full"
@@ -158,6 +160,7 @@ export const SignUpCard = () => {
           size={"lg"}
           className="w-full"
           disabled={false}
+          onClick={() => signUpWithGithub()}
         >
           <FaGithub className="mr-2 size-5" />
           Login with Github
