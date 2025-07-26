@@ -26,12 +26,12 @@ interface TaskViewSwitcherProps {
 export const TaskViewSwitcher = ({
   hideProjectFilter,
 }: TaskViewSwitcherProps) => {
+  const workspaceId = useWorkspaceId();
   const projectId = useProjectId();
   const [{ status, assigneeId, search, dueDate }] = useTaskFilters();
   const [view, setView] = useQueryState("task-view", {
     defaultValue: "table",
   });
-  const workspaceId = useWorkspaceId();
   const { open } = useCreateTaskModal();
   const { mutate: bulkUpdateTask } = useBulkUpdateTask();
   const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
