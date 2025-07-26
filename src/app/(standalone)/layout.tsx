@@ -1,10 +1,19 @@
 import { UserButton } from "@/features/auth/components/user-button";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 interface CreateWorkspaceLayoutProps {
   children: React.ReactNode;
 }
+
+export const metadata: Metadata = {
+  title: "Managing your tasks",
+  description: "Manage your tasks with ease, and keep your team in sync.",
+  icons: {
+    icon: "/linelogo.png",
+  },
+};
 
 const CreateWorkspaceLayout = ({ children }: CreateWorkspaceLayoutProps) => {
   return (

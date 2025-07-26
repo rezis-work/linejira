@@ -4,10 +4,19 @@ import { CreateProjectModal } from "@/features/projects/components/create-projec
 import { CreateTaskModal } from "@/features/tasks/components/create-task-modal";
 import { EditTaskModal } from "@/features/tasks/components/edit.task-modal";
 import { CreateWorkspaceModal } from "@/features/workspaces/components/create-workspace-modal";
+import { Metadata } from "next";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
+
+export const metadata: Metadata = {
+  title: "Dahsboard",
+  description: "Your dashboard for managing your projects and tasks",
+  icons: {
+    icon: "/linelogo.png",
+  },
+};
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
