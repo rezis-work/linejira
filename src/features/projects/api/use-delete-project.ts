@@ -35,7 +35,6 @@ export const useDeleteProject = () => {
         queryKey: ["projects", project.$id],
       });
       router.push(`/workspaces/${project.workspaceId}`);
-      router.refresh();
     },
     onError: () => toast.error("Failed to delete project"),
   });

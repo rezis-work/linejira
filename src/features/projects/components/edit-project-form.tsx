@@ -73,8 +73,6 @@ export const EditProjectForm = ({
       form: finalValues,
       param: { projectId: initialValues.$id },
     });
-    form.reset();
-    onCancel?.();
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
